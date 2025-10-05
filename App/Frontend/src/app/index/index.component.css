@@ -10,7 +10,7 @@
 .index-footer { grid-area: footer; }
 
 .index-body {
-    background-color: var(--secondary);
+    background-color: var(--background);
     display: grid;
     grid-template-areas: 
         "header"

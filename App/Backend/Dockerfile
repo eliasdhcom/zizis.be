@@ -6,7 +6,7 @@
 # Backend build
 
 
-# LABEL maintainer=""
+# LABEL maintainer="Zizis"
 # LABEL version="1.0.0"
 # LABEL description="This is the backend image for the app."
 # LABEL org.opencontainers.image.description="This is the backend image for the app."

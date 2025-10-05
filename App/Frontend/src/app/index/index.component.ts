@@ -26,6 +26,7 @@ export class IndexComponent implements OnInit {
     currentTheme: string = 'light';
     footerContent: SafeHtml | null = null;
     currentYear: number;
+    isLoading: boolean = true;
 
     settingsConfig = {
         languages: [
@@ -58,6 +59,7 @@ export class IndexComponent implements OnInit {
         this.translate.setDefaultLang('nl');
         this.setTheme(this.currentTheme);
         this.loadFooter();
+        setTimeout(() => this.isLoading = false, 1000); // Simulate loading for animation
     }
 
     loadFooter() {
@@ -88,7 +90,7 @@ export class IndexComponent implements OnInit {
 
     isToday(day: string): boolean {
         const today = new Date();
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday', 'Saturday'];
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         return day === days[today.getDay()];
     }
 
@@ -100,5 +102,9 @@ export class IndexComponent implements OnInit {
 
     toggleTheme() {
         this.setTheme(this.currentTheme === 'light' ? 'dark' : 'light');
+    }
+
+    scrollToSection(section: string) {
+        document.querySelector(`.${section}`)?.scrollIntoView({ behavior: 'smooth' });
     }
 }
