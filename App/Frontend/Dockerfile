@@ -14,6 +14,8 @@ LABEL org.opencontainers.image.description="This is the frontend image for the a
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
+COPY ./robots.txt /usr/share/nginx/html/robots.txt
+COPY ./sitemap.xml /usr/share/nginx/html/sitemap.xml
 COPY ./dist/frontend/browser /usr/share/nginx/html
 
 EXPOSE 8080
