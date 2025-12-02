@@ -1,8 +1,8 @@
 /**
- * @author EliasDH Team
- * @see https://eliasdh.com
- * @since 01/01/2025
- */
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
 
 import { Component, OnInit } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
