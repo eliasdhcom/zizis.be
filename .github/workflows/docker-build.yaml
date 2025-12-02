@@ -36,7 +36,7 @@ jobs:
             npm run build
       - name: Login to GHCR
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdehondt --password-stdin
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdh --password-stdin
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdhcom/zizisbe-frontend:${{ env.IMAGE_TAG }} ./App/Frontend
