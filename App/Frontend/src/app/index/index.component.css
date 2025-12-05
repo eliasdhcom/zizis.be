@@ -178,23 +178,8 @@
 
 /* Footer */
 .index-footer {
-    left: 35%;
-    right: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
 }
 /* Footer */
-
-/* Index Media Queries */
-@media screen and (max-width: 650px) {
-    .index-footer {
-        left: 10%;
-        right: 10%;
-    }
-}
-
-@media screen and (max-width: 650px) {
-    .index-footer {
-        left: 5%;
-        right: 5%;
-    }
-}
-/* Index Media Queries */
