@@ -7,6 +7,8 @@
     "LOCATION": "Emplacement",
     "PHONE": "Téléphone",
     "EMAIL": "E-mail",
+    "LEGAL_GUIDELINES": "Directives Juridiques",
+    "PRIVACY_POLICY": "Politique de Confidentialité",
     "OPENING_HOURS_TITLE": "Horaires d'ouverture",
     "OPENING_HOURS": {
         "MONDAY": "Lundi : Fermé",

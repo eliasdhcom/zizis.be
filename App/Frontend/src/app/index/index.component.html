@@ -1,18 +1,40 @@
 <!--Author EliasDH Team-->
 <body class="index-body">
     <header class="index-header">
-        <section class="index-header-language">
-            <article class="global-dropdown">
-                <a (click)="toggleDropdown()">
-                    <svg viewBox="0 0 16 16" class="global-dropdown-svg cursor-pointer">
-                        <path d="M4 0H6V2H10V4H8.86807C8.57073 5.66996 7.78574 7.17117 6.6656 8.35112C7.46567 8.73941 8.35737 8.96842 9.29948 8.99697L10.2735 6H12.7265L15.9765 16H13.8735L13.2235 14H9.77647L9.12647 16H7.0235L8.66176 10.9592C7.32639 10.8285 6.08165 10.3888 4.99999 9.71246C3.69496 10.5284 2.15255 11 0.5 11H0V9H0.5C1.5161 9 2.47775 8.76685 3.33437 8.35112C2.68381 7.66582 2.14629 6.87215 1.75171 6H4.02179C4.30023 6.43491 4.62904 6.83446 4.99999 7.19044C5.88743 6.33881 6.53369 5.23777 6.82607 4H0V2H4V0ZM12.5735 12L11.5 8.69688L10.4265 12H12.5735Z"></path>
+        <section class="index-header-nav">
+            <article class="index-navbar-buttons">
+                <a href="https://www.instagram.com/hairfashionzizis" target="_blank" class="index-navbar-btn cursor-pointer" title="Instagram">
+                    <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                     </svg>
                 </a>
-                <ul class="global-dropdown-menu cursor-pointer" *ngIf="dropdownOpen">
-                    <li *ngFor="let lang of settingsConfig.languages" [class.active]="lang.code === currentLanguage" (click)="changeLanguage(lang.code)">
-                        {{ lang.name }}
-                    </li>
-                </ul>
+                <a href="https://eliasdh.com/legalguidelines" target="_blank" class="index-navbar-btn cursor-pointer" [title]="'INDEX.LEGAL_GUIDELINES' | translate">
+                    <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                </a>
+                <a href="https://eliasdh.com/privacypolicy" target="_blank" class="index-navbar-btn cursor-pointer" [title]="'INDEX.PRIVACY_POLICY' | translate">
+                    <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </a>
+                <article class="global-dropdown">
+                    <a (click)="toggleDropdown()" class="index-navbar-btn cursor-pointer">
+                        <svg viewBox="0 0 16 16" class=" cursor-pointer">
+                            <path d="M4 0H6V2H10V4H8.86807C8.57073 5.66996 7.78574 7.17117 6.6656 8.35112C7.46567 8.73941 8.35737 8.96842 9.29948 8.99697L10.2735 6H12.7265L15.9765 16H13.8735L13.2235 14H9.77647L9.12647 16H7.0235L8.66176 10.9592C7.32639 10.8285 6.08165 10.3888 4.99999 9.71246C3.69496 10.5284 2.15255 11 0.5 11H0V9H0.5C1.5161 9 2.47775 8.76685 3.33437 8.35112C2.68381 7.66582 2.14629 6.87215 1.75171 6H4.02179C4.30023 6.43491 4.62904 6.83446 4.99999 7.19044C5.88743 6.33881 6.53369 5.23777 6.82607 4H0V2H4V0ZM12.5735 12L11.5 8.69688L10.4265 12H12.5735Z"></path>
+                        </svg>
+                    </a>
+                    <ul class="global-dropdown-menu cursor-pointer" *ngIf="dropdownOpen">
+                        <li *ngFor="let lang of settingsConfig.languages" [class.active]="lang.code === currentLanguage" (click)="changeLanguage(lang.code)">
+                            {{ lang.name }}
+                        </li>
+                    </ul>
+                </article>
             </article>
         </section>
         <section class="index-header-logo">
@@ -21,21 +43,33 @@
         <div class="index-header-content">
             <h1>{{ 'INDEX.TITLE' | translate }}</h1>
             <p>{{ 'INDEX.SUBTITLE' | translate }}</p>
-            <a href="tel:+32123456789" class="index-header-button cursor-pointer">{{ 'INDEX.CALL_TO_ACTION' | translate }}</a>
+            <a href="tel:+32477538692" class="index-header-button cursor-pointer">{{ 'INDEX.CALL_TO_ACTION' | translate }}</a>
         </div>
     </header>
     <main class="index-main">
-        <div class="index-main-left">
+        <div class="index-main-grid">
             <section class="index-main-section1">
                 <h2>{{ 'INDEX.CONTACT_TITLE' | translate }}</h2>
-                <p>
-                    <strong>{{ 'INDEX.LOCATION' | translate }}:</strong> 
-                    <a class="cursor-pointer" href="https://www.google.com/maps/place/Kapper+Zizis/@51.1574732,4.5160405,664m/data=!3m1!1e3!4m6!3m5!1s0x47c3fbc98241171d:0x963f447ba2993b24!8m2!3d51.1578719!4d4.5153942!16s%2Fg%2F11c0wc2ntk?authuser=0&entry=ttu&g_ep=EgoyMDI1MDMxOS4yIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank">
-                        Provinciesteenweg 557/N10, 2530 Boechout
-                    </a>
-                </p>
-                <p><strong>{{ 'INDEX.PHONE' | translate }}:</strong> <a class="cursor-pointer" href="tel:+32123456789"> +32 477 53 86 92</a></p>
-                <p><strong>{{ 'INDEX.EMAIL' | translate }}:</strong> <a class="cursor-pointer" href="mailto:info&#64;zizis.be"> info&#64;zizis.be</a></p>
+                <div class="index-contact-info">
+                    <p>
+                        <strong>{{ 'INDEX.LOCATION' | translate }}:</strong> 
+                        <a class="cursor-pointer" href="https://www.google.com/maps/place/Kapper+Zizis/@51.1574732,4.5160405,664m/data=!3m1!1e3!4m6!3m5!1s0x47c3fbc98241171d:0x963f447ba2993b24!8m2!3d51.1578719!4d4.5153942!16s%2Fg%2F11c0wc2ntk" target="_blank">
+                            Provinciesteenweg 557/N10, 2530 Boechout
+                        </a>
+                    </p>
+                    <p><strong>{{ 'INDEX.PHONE' | translate }}:</strong> <a class="cursor-pointer" href="tel:+32477538692"> +32 477 53 86 92</a></p>
+                    <p><strong>{{ 'INDEX.EMAIL' | translate }}:</strong> <a class="cursor-pointer" href="mailto:info&#64;zizis.be"> info&#64;zizis.be</a></p>
+                </div>
+                <div class="index-map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2501.8887!2d4.5153942!3d51.1578719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3fbc98241171d%3A0x963f447ba2993b24!2sKapper%20Zizis!5e0!3m2!1snl!2sbe!4v1700000000000!5m2!1snl!2sbe"
+                        class="index-map-iframe"
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
             </section>
             <section class="index-main-section2">
                 <h2>{{ 'INDEX.OPENING_HOURS_TITLE' | translate }}</h2>
@@ -48,7 +82,7 @@
                     <li [class.today]="isToday('Saturday')">{{ 'INDEX.OPENING_HOURS.SATURDAY' | translate }}</li>
                     <li [class.today]="isToday('Sunday')">{{ 'INDEX.OPENING_HOURS.SUNDAY' | translate }}</li>
                 </ul>
-                <p>{{ 'INDEX.OPENING_HOURS_CALL' | translate }}</p>
+                <p class="index-hours-cta">{{ 'INDEX.OPENING_HOURS_CALL' | translate }}</p>
             </section>
         </div>
         <section class="index-main-section3">

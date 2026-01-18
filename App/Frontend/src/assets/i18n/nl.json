@@ -7,6 +7,8 @@
     "LOCATION": "Locatie",
     "PHONE": "Telefoon",
     "EMAIL": "E-mail",
+    "LEGAL_GUIDELINES": "Juridische Richtlijnen",
+    "PRIVACY_POLICY": "Privacybeleid",
     "OPENING_HOURS_TITLE": "Openingsuren",
     "OPENING_HOURS": {
         "MONDAY": "Maandag: Gesloten",

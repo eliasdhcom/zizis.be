@@ -114,13 +114,12 @@ body {
     visibility: visible;
     position: relative;
     display: inline-block;
-    width: 100%;
     z-index: 2;
 }
 
 .global-dropdown-svg {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     fill: var(--primary);
     transition: transform 0.3s ease;
 }
@@ -145,7 +144,8 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.global-dropdown-menu li:hover,li.active  {
+.global-dropdown-menu li:hover,
+.global-dropdown-menu li.active {
     background-color: var(--accent);
     color: var(--background);
     border-radius: 16px;
