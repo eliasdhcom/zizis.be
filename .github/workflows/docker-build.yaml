@@ -37,3 +37,6 @@ jobs:
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdhcom/zizisbe-frontend:latest ./App/Frontend
+      - name: Build/Push Backend Docker Image
+        run: |
+            docker build --push -t ghcr.io/eliasdhcom/zizisbe-backend:latest ./App/Backend

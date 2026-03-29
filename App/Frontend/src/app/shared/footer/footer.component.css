@@ -1,0 +1,15 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* Footer */
+.footer {
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    position: relative;
+    padding: 1px;
+}
+/* Footer */

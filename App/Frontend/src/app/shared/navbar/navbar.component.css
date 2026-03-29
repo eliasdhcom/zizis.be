@@ -1,0 +1,187 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* NavBar */
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+}
+
+.navbar-btn:hover {
+    box-shadow: 0 4px 12px var(--primary);
+}
+
+.navbar-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--background);
+    stroke: var(--secondary);
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.navbar-dropdown {
+    visibility: visible;
+    position: relative;
+    display: inline-block;
+    z-index: 1001;
+}
+
+.navbar-dropdown-svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.navbar-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: var(--background);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1002;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-dropdown-menu li {
+    color: var(--text);
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-dropdown-menu li:hover,
+.navbar-dropdown-menu li.active {
+    background-color: var(--accent);
+    color: var(--background);
+    border-radius: 16px;
+}
+
+.navbar-logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.navbar-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navbar-logo-image {
+    max-height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+/* NavBar */
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .navbar {
+        top: 15px;
+        left: 15px;
+    }
+
+    .navbar-buttons {
+        gap: 8px;
+    }
+
+    .navbar-btn {
+        width: 35px;
+        height: 35px;
+    }
+
+    .navbar-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .navbar-logo {
+        top: 15px;
+        right: 15px;
+    }
+
+    .navbar-logo-image {
+        max-height: 80px;
+    }
+
+    .navbar-dropdown-menu {
+        min-width: 130px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        top: 12px;
+        left: 12px;
+    }
+
+    .navbar-buttons {
+        gap: 8px;
+    }
+
+    .navbar-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .navbar-logo {
+        top: 12px;
+        right: 12px;
+    }
+
+    .navbar-logo-image {
+        max-height: 60px;
+    }
+
+    .navbar-dropdown-menu {
+        min-width: 120px;
+    }
+
+    .navbar-dropdown-menu li {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+}
+/* Media Queries */
