@@ -130,6 +130,16 @@ body.shop-checkout-body::before {
     gap: 20px;
 }
 
+.shop-checkout-quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid rgba(53, 171, 23, 0.2);
+    border-radius: 20px;
+    padding: 5px 10px;
+    background: rgba(53, 171, 23, 0.05);
+}
+
 .shop-checkout-subtotal {
     font-weight: 700;
     color: var(--primary);
@@ -148,7 +158,35 @@ body.shop-checkout-body::before {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     background: rgba(255, 0, 0, 0.1);
-    color: #d32f2f;
+    color: #e74c3c;
+}
+
+.shop-checkout-btn-qty {
+    border: none;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    background: rgba(53, 171, 23, 0.2);
+    color: var(--primary);
+}
+
+.shop-checkout-btn-qty:hover:not(:disabled) {
+    background: rgba(53, 171, 23, 0.4);
+    transform: scale(1.1);
+}
+
+.shop-checkout-btn-qty:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.shop-checkout-qty-display {
+    font-weight: 700;
+    color: var(--text);
+    min-width: 25px;
+    text-align: center;
 }
 
 .shop-checkout-btn-remove:hover {

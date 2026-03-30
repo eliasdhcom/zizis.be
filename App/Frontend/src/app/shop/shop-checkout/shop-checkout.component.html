@@ -32,7 +32,12 @@
                             </div>
                             <div class="shop-checkout-details">
                                 <h3>{{ item.name }}</h3>
-                                <p class="shop-checkout-meta">{{ item.quantity }}x {{ 'SHOP.AT' | translate }} €{{ item.price.toFixed(2) }}</p>
+                                <p class="shop-checkout-meta">{{ 'SHOP.AT' | translate }} €{{ item.price.toFixed(2) }}</p>
+                            </div>
+                            <div class="shop-checkout-quantity">
+                                <button (click)="changeQuantity(item.id, -1)" class="shop-checkout-btn-qty cursor-pointer" [disabled]="item.quantity <= 1">−</button>
+                                <span class="shop-checkout-qty-display">{{ item.quantity }}</span>
+                                <button (click)="changeQuantity(item.id, 1)" class="shop-checkout-btn-qty cursor-pointer" [disabled]="item.quantity >= 5">+</button>
                             </div>
                             <div class="shop-checkout-actions">
                                 <span class="shop-checkout-subtotal">€{{ item.subtotal.toFixed(2) }}</span>

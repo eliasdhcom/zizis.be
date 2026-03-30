@@ -30,9 +30,10 @@ try {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const STAFF_EMAIL = process.env.STAFF_EMAIL;
+const SENDER_EMAIL = process.env.SMTP_USER;
 const FRONTEND_URL = (process.env.FRONTEND_URL).trim();
 
-const requiredEnvVars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS'];
+const requiredEnvVars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'STAFF_EMAIL', 'FRONTEND_URL'];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingEnvVars.length > 0) {
@@ -276,6 +277,12 @@ app.post('/api/shop/verify-payment', checkoutLimiter, async (req, res) => {
         }
 
     } catch (error) {
+        console.error('Payment verification error:', {
+            message: error.message,
+            code: error.code,
+            type: error.type,
+            statusCode: error.statusCode
+        });
         res.status(500).json({ 
             success: false,
             error: 'Failed to verify payment' 
@@ -287,14 +294,14 @@ const sendOrderEmails = async (customerName, customerEmail, customerPhone, custo
     const transporter = createTransporter();
 
     const customerMailOptions = {
-        from: CUSTOMER_EMAIL,
+        from: SENDER_EMAIL,
         to: customerEmail,
         subject: '✓ Your Order Confirmation - Zizis',
         html: getOrderEmailTemplate(customerName, orderItems, orderTotal, sessionId, customerAddress)
     };
 
     const staffMailOptions = {
-        from: CUSTOMER_EMAIL,
+        from: SENDER_EMAIL,
         to: STAFF_EMAIL,
         subject: '📦 New Order Received - Zizis Shop',
         html: getOrderStaffEmailTemplate(customerName, customerEmail, customerPhone, customerAddress, orderItems, orderTotal, sessionId)

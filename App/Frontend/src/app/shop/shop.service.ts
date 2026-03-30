@@ -113,6 +113,27 @@ export class ShopService {
         this.setCart(cart);
     }
 
+    updateQuantity(productId: number, newQuantity: number): boolean {
+        const cart = this.getCart();
+        const item = cart.find(i => i.id === productId);
+
+        if (!item) return false;
+
+        if (newQuantity < 1) {
+            this.removeFromCart(productId);
+            return true;
+        }
+        if (newQuantity > 5) return false;
+        const currentTotal = cart.reduce((sum, i) => sum + i.quantity, 0);
+        const difference = newQuantity - item.quantity;
+
+        if (currentTotal + difference > 10) return false;
+
+        item.quantity = newQuantity;
+        this.setCart(cart);
+        return true;
+    }
+
     clearCart() {
         localStorage.removeItem('shop-cart');
     }

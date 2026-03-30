@@ -125,6 +125,18 @@ export class ShopCheckoutComponent implements OnInit {
         this.loadCart();
     }
 
+    changeQuantity(productId: number, change: number) {
+        const item = this.cartItems.find(i => i.id === productId);
+        if (!item) return;
+
+        const newQuantity = item.quantity + change;
+        const success = this.shopService.updateQuantity(productId, newQuantity);
+
+        if (success) {
+            this.loadCart();
+        }
+    }
+
     isValidFirstName(): boolean {
         return this.customerFirstName.trim().length >= 2;
     }
