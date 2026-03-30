@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { SharedModule } from '../../shared/shared.module';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
     selector: 'app-shop-success',
@@ -38,7 +39,8 @@ export class ShopSuccessComponent implements OnInit {
     }
 
     private verifyPayment(sessionId: string): void {
-        this.http.post('http://localhost:3000/api/shop/verify-payment', { sessionId }).subscribe();
+        const url = `${environment.ApiUrl}/api/shop/verify-payment`;
+        this.http.post(url, { sessionId }).subscribe();
     }
 
     continueShop(): void {
