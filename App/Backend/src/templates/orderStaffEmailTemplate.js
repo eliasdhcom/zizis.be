@@ -164,16 +164,16 @@ module.exports = function getOrderStaffEmailTemplate(customerName, customerEmail
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>📦 Nieuwe Bestelling Ontvangen</h1>
+                    <h1>Nieuwe Bestelling Ontvangen</h1>
                 </div>
 
                 <div class="alert-box">
-                    ⚠️ ACTIE VEREIST: Deze bestelling moet klaargemaakt worden voor afhaling!
+                    ACTIE VEREIST: Deze bestelling moet klaargemaakt worden voor afhaling!
                 </div>
 
                 <div class="content">
                     <div class="section">
-                        <h2>👥 Klantgegevens</h2>
+                        <h2>Klantgegevens</h2>
                         <div class="info-row">
                             <span class="label">Naam:</span>
                             <span class="value">${customerName}</span>
@@ -197,7 +197,7 @@ module.exports = function getOrderStaffEmailTemplate(customerName, customerEmail
                     </div>
 
                     <div class="section">
-                        <h2>📥 Bestelde Producten</h2>
+                        <h2>Bestelde Producten</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -216,14 +216,14 @@ module.exports = function getOrderStaffEmailTemplate(customerName, customerEmail
                     </div>
 
                     <div class="section">
-                        <h2>🔍 Referentie</h2>
+                        <h2>Referentie</h2>
                         <div class="reference-box">
                             Session ID: ${sessionId}
                         </div>
                     </div>
 
                     <div class="action-text">
-                        <strong>📋 Volgende Stap:</strong><br>
+                        <strong>Volgende Stap:</strong><br>
                         Bereid de producten voor en zet deze klaar voor afhaling in de winkel.
                     </div>
                 </div>

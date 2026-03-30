@@ -4,6 +4,8 @@
     * @since 29/03/2026
 **/
 
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -12,7 +14,6 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_example_key');
 const fs = require('fs');
-require('dotenv').config();
 
 const getOrderEmailTemplate = require('./templates/orderEmailTemplate');
 const getOrderStaffEmailTemplate = require('./templates/orderStaffEmailTemplate');
@@ -22,21 +23,22 @@ let products = [];
 try {
     const productsData = fs.readFileSync(productsPath, 'utf8');
     products = JSON.parse(productsData);
-    console.log(`✓ Loaded ${products.length} products from products.json`);
 } catch (err) {
-    console.error('✗ Error loading products.json:', err.message);
+    console.error('Error loading products.json:', err.message);
 }
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-const SHOP_EMAIL = process.env.SHOP_EMAIL || 'info@zizis.be';
+const PORT = process.env.PORT || 3000;
+const CUSTOMER_EMAIL = process.env.CUSTOMER_EMAIL || process.env.SMTP_USER;
+const STAFF_EMAIL = process.env.STAFF_EMAIL;
+const FRONTEND_URL = (process.env.FRONTEND_URL).trim();
 
 const requiredEnvVars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS'];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingEnvVars.length > 0) {
-    console.error(`✗ Missing environment variables: ${missingEnvVars.join(', ')}`);
-    console.error('Please check your .env file');
+    console.error('Error: Missing environment variables:', missingEnvVars.join(', '));
+    process.exit(1);
 }
 
 const shopLimiter = rateLimit({
@@ -61,7 +63,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const createTransporter = () => {
     return nodemailer.createTransport({
         host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
+        port: parseInt(process.env.SMTP_PORT),
         secure: false,
         auth: {
             user: process.env.SMTP_USER,
@@ -157,13 +159,20 @@ app.post('/api/shop/checkout', checkoutLimiter, async (req, res) => {
 
             const quantity = item.quantity || 1;
 
+            let imageUrl = '';
+            if (product.image) {
+                imageUrl = product.image.startsWith('http')
+                    ? product.image
+                    : `${FRONTEND_URL}${product.image}`;
+            }
+
             lineItems.push({
                 price_data: {
                     currency: 'eur',
                     product_data: {
                         name: product.name,
                         description: product.description,
-                        images: [product.image]
+                        images: imageUrl ? [imageUrl] : []
                     },
                     unit_amount: Math.round(product.price * 100)
                 },
@@ -180,12 +189,22 @@ app.post('/api/shop/checkout', checkoutLimiter, async (req, res) => {
             });
         }
 
+        const successUrl = `${FRONTEND_URL}/shop/success?session_id={CHECKOUT_SESSION_ID}`;
+        const cancelUrl = `${FRONTEND_URL}/shop/cancelled`;
+
+        if (lineItems.length === 0) {
+            return res.status(400).json({ 
+                success: false,
+                error: 'No valid line items created' 
+            });
+        }
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: process.env.FRONTEND_URL + '/shop?status=success&session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: process.env.FRONTEND_URL + '/shop?status=cancelled',
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             customer_email: customerEmail,
             metadata: {
                 customerName: customerName,
@@ -197,8 +216,6 @@ app.post('/api/shop/checkout', checkoutLimiter, async (req, res) => {
             }
         });
 
-        console.log(`✓ Checkout session created: ${session.id}`);
-
         res.status(200).json({ 
             success: true, 
             sessionId: session.id,
@@ -206,56 +223,12 @@ app.post('/api/shop/checkout', checkoutLimiter, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('✗ Error creating checkout session:', error.message);
+        console.error('Error creating checkout session:', error.message);
         res.status(500).json({ 
             success: false,
             error: 'Failed to create checkout session',
             details: error.message 
         });
-    }
-});
-
-app.post('/api/shop/webhook', express.raw({type: 'application/json'}), async (req, res) => {
-    try {
-        const sig = req.headers['stripe-signature'];
-        const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test';
-
-        let event;
-        try {
-            event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-        } catch (err) {
-            console.error('✗ Webhook signature verification failed:', err.message);
-            return res.status(400).json({ success: false, error: 'Invalid signature' });
-        }
-
-        if (event.type === 'checkout.session.completed') {
-            const session = event.data.object;
-            
-            console.log(`✓ Processing payment for session: ${session.id}`);
-
-            const customerName = session.metadata.customerName;
-            const customerEmail = session.metadata.customerEmail;
-            const customerPhone = session.metadata.customerPhone;
-            const customerAddress = session.metadata.customerAddress;
-            const orderItems = JSON.parse(session.metadata.orderItems);
-            const orderTotal = parseFloat(session.metadata.orderTotal);
-
-            await sendOrderEmails(
-                customerName, 
-                customerEmail, 
-                customerPhone,
-                customerAddress,
-                orderItems, 
-                orderTotal, 
-                session.id
-            );
-        }
-
-        res.json({ success: true });
-
-    } catch (error) {
-        console.error('✗ Webhook error:', error);
-        res.status(500).json({ success: false, error: 'Webhook processing failed' });
     }
 });
 
@@ -304,7 +277,6 @@ app.post('/api/shop/verify-payment', checkoutLimiter, async (req, res) => {
         }
 
     } catch (error) {
-        console.error('✗ Error verifying payment:', error);
         res.status(500).json({ 
             success: false,
             error: 'Failed to verify payment' 
@@ -316,15 +288,15 @@ const sendOrderEmails = async (customerName, customerEmail, customerPhone, custo
     const transporter = createTransporter();
 
     const customerMailOptions = {
-        from: process.env.SMTP_USER,
+        from: CUSTOMER_EMAIL,
         to: customerEmail,
         subject: '✓ Your Order Confirmation - Zizis',
         html: getOrderEmailTemplate(customerName, orderItems, orderTotal, sessionId, customerAddress)
     };
 
     const staffMailOptions = {
-        from: process.env.SMTP_USER,
-        to: SHOP_EMAIL,
+        from: CUSTOMER_EMAIL,
+        to: STAFF_EMAIL,
         subject: '📦 New Order Received - Zizis Shop',
         html: getOrderStaffEmailTemplate(customerName, customerEmail, customerPhone, customerAddress, orderItems, orderTotal, sessionId)
     };
@@ -334,9 +306,8 @@ const sendOrderEmails = async (customerName, customerEmail, customerPhone, custo
             transporter.sendMail(customerMailOptions),
             transporter.sendMail(staffMailOptions)
         ]);
-        console.log(`✓ Order confirmation emails sent for session ${sessionId}`);
     } catch (error) {
-        console.error('✗ Failed to send order confirmation emails:', error);
+        console.error('Failed to send order confirmation emails:', error.message);
     }
 };
 
@@ -348,5 +319,6 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Backend service successfully started on port ${PORT}`);
+    const msg = `Backend service running on port ${PORT}`;
+    console.log(msg);
 });

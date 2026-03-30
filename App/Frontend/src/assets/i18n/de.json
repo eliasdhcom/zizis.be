@@ -93,6 +93,14 @@
     "MAX_PER_PRODUCT": "Max 5 pro Produkt",
     "MAX_TOTAL_ITEMS": "Max 10 Artikel insgesamt (jetzt: {count})",
     "MAX_CART_ERROR": "Zu viele Artikel im Warenkorb (Max 10)",
-    "MAX": "Max"
+    "MAX": "Max",
+    "FIELD_REQUIRED": "Dieses Feld ist erforderlich",
+    "FIRST_NAME_ERROR": "Vorname muss mindestens 2 Zeichen lang sein",
+    "LAST_NAME_ERROR": "Nachname muss mindestens 2 Zeichen lang sein",
+    "EMAIL_ERROR": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "PHONE_ERROR": "Bitte geben Sie eine gültige Telefonnummer ein",
+    "PRIVACY_REQUIRED": "Sie müssen der Datenschutzrichtlinie zustimmen",
+    "LEGAL_REQUIRED": "Sie müssen den Rechtlichen Richtlinien zustimmen",
+    "PICKUP_AVAILABLE": "Ihre Bestellung wird in 2 Werktagen an unserem Geschäft bereit sein - siehe Adresse unten."
   }
 }

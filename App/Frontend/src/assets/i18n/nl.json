@@ -93,6 +93,14 @@
     "MAX_PER_PRODUCT": "Max 5 van elk product",
     "MAX_TOTAL_ITEMS": "Max 10 items totaal (nu: {count})",
     "MAX_CART_ERROR": "Te veel items in winkelwagen (Max 10)",
-    "MAX": "Max"
+    "MAX": "Max",
+    "FIELD_REQUIRED": "Dit veld is verplicht",
+    "FIRST_NAME_ERROR": "Voornaam moet minimaal 2 karakters zijn",
+    "LAST_NAME_ERROR": "Achternaam moet minimaal 2 karakters zijn",
+    "EMAIL_ERROR": "Voer alstublieft een geldig e-mailadres in",
+    "PHONE_ERROR": "Voer alstublieft een geldig telefoonnummer in",
+    "PRIVACY_REQUIRED": "Je moet akkoord gaan met het Privacybeleid",
+    "LEGAL_REQUIRED": "Je moet akkoord gaan met de Juridische Richtlijnen",
+    "PICKUP_AVAILABLE": "Je bestelling is binnen 2 werkdagen klaar voor afhaling in onze winkel op het adres hieronder."
   }
 }

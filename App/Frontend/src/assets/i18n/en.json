@@ -93,6 +93,13 @@
     "MAX_PER_PRODUCT": "Max 5 per product",
     "MAX_TOTAL_ITEMS": "Max 10 items total (now: {count})",
     "MAX_CART_ERROR": "Too many items in cart (Max 10)",
-    "MAX": "Max"
+    "MAX": "Max",
+    "FIELD_REQUIRED": "This field is required",
+    "FIRST_NAME_ERROR": "First name must be at least 2 characters",
+    "LAST_NAME_ERROR": "Last name must be at least 2 characters",
+    "EMAIL_ERROR": "Please enter a valid email address",
+    "PHONE_ERROR": "Please enter a valid phone number",
+    "PRIVACY_REQUIRED": "You must agree to the Privacy Policy",
+    "LEGAL_REQUIRED": "You must agree to the Legal Guidelines",
+    "PICKUP_AVAILABLE": "Your order will be ready for pickup in 2 business days at our store location below."
   }
-}

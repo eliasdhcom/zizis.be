@@ -158,7 +158,7 @@ module.exports = function getOrderEmailTemplate(customerName, orderItems, orderT
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>✓ Bestelling Bevestigd</h1>
+                    <h1>Bestelling Bevestigd</h1>
                 </div>
 
                 <div class="content">
@@ -168,7 +168,7 @@ module.exports = function getOrderEmailTemplate(customerName, orderItems, orderT
                     </div>
 
                     <div class="section">
-                        <h2>📦 Bestelgegevens</h2>
+                        <h2>Bestelgegevens</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -188,19 +188,26 @@ module.exports = function getOrderEmailTemplate(customerName, orderItems, orderT
                     </div>
 
                     <div class="section">
-                        <h2>🏪 Afhaling</h2>
+                        <h2>Informatie Afhaling</h2>
                         <div class="info-box">
-                            <p>Je bestelling wordt klaargemaakt en staat op het volgende adres klaar voor afhaling:</p>
-                            <p style="margin-top: 15px; font-weight: 700; color: #1a1a1a;">
-                                Zizis Kapsalon<br>
+                            <p><strong>Uw bestelling is klaar voor afhaling binnen 2 werkdagen.</strong></p>
+                            <p style="margin-top: 15px; color: #1a1a1a;">
+                                <strong>Zizis Kapsalon</strong><br>
                                 ${customerAddress ? customerAddress + '<br>' : ''}
-                                <em style="color: #999; font-style: italic;">${new Date().toLocaleDateString('nl-NL')}</em>
+                            </p>
+                            <p style="margin-top: 15px; color: #1a1a1a;">
+                                <strong>Openingsuren:</strong><br>
+                                Maandag: Gesloten<br>
+                                Dinsdag - Woensdag: 08:30 - 14:00<br>
+                                Donderdag - Vrijdag: 08:30 - 20:00<br>
+                                Zaterdag: 07:00 - 16:00<br>
+                                Zondag: Gesloten
                             </p>
                         </div>
                     </div>
 
                     <div class="section">
-                        <h2>📋 Bestelreferentie</h2>
+                        <h2>Bestelreferentie</h2>
                         <div class="info-box">
                             <p><span class="label">Session ID:</span> <code style="background-color: rgba(53, 171, 23, 0.15); padding: 4px 8px; border-radius: 4px; font-family: monospace; color: #1a1a1a;">${sessionId}</code></p>
                         </div>

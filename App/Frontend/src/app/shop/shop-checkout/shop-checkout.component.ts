@@ -43,6 +43,24 @@ export class ShopCheckoutComponent implements OnInit {
     agreeToPrivacy = false;
     agreeToLegal = false;
 
+    touched = {
+        firstName: false,
+        lastName: false,
+        email: false,
+        phone: false,
+        privacy: false,
+        legal: false
+    };
+
+    fieldErrors = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        privacy: '',
+        legal: ''
+    };
+
     loading = false;
     processing = false;
     error: string | null = null;
@@ -107,14 +125,81 @@ export class ShopCheckoutComponent implements OnInit {
         this.loadCart();
     }
 
-    async checkout() {
-        if (!this.customerFirstName || !this.customerLastName || !this.customerEmail || !this.customerPhone) {
-            this.error = 'SHOP.ERROR';
-            return;
-        }
+    isValidFirstName(): boolean {
+        return this.customerFirstName.trim().length >= 2;
+    }
 
-        if (!this.agreeToPrivacy || !this.agreeToLegal) {
-            this.error = 'SHOP.ERROR';
+    isValidLastName(): boolean {
+        return this.customerLastName.trim().length >= 2;
+    }
+
+    isValidEmail(): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(this.customerEmail.trim());
+    }
+
+    isValidPhone(): boolean {
+        const phone = this.customerPhone.trim().replace(/\s/g, '');
+        const belg = /^(\+32|0)[1-9]\d{7,8}$/;
+        const nld = /^(\+31|0)[1-9]\d{7,8}$/;
+        const fra = /^(\+33|0)[1-9]\d{8}$/;
+        const deu = /^(\+49|0)[1-9]\d{7,9}$/;
+        const lux = /^(\+352)[1-9]\d{6,7}$/;
+
+        return belg.test(phone) || nld.test(phone) || fra.test(phone) || deu.test(phone) || lux.test(phone);
+    }
+
+    validateField(fieldName: string) {
+        this.touched[fieldName as keyof typeof this.touched] = true;
+        this.fieldErrors[fieldName as keyof typeof this.fieldErrors] = '';
+
+        switch (fieldName) {
+            case 'firstName':
+                if (!this.customerFirstName.trim()) this.fieldErrors.firstName = 'SHOP.FIELD_REQUIRED';
+                else if (!this.isValidFirstName()) this.fieldErrors.firstName = 'SHOP.FIRST_NAME_ERROR';
+                break;
+            case 'lastName':
+                if (!this.customerLastName.trim()) this.fieldErrors.lastName = 'SHOP.FIELD_REQUIRED';
+                else if (!this.isValidLastName()) this.fieldErrors.lastName = 'SHOP.LAST_NAME_ERROR';
+                break;
+            case 'email':
+                if (!this.customerEmail.trim()) this.fieldErrors.email = 'SHOP.FIELD_REQUIRED';
+                else if (!this.isValidEmail()) this.fieldErrors.email = 'SHOP.EMAIL_ERROR';
+                break;
+            case 'phone':
+                if (!this.customerPhone.trim()) this.fieldErrors.phone = 'SHOP.FIELD_REQUIRED';
+                else if (!this.isValidPhone()) this.fieldErrors.phone = 'SHOP.PHONE_ERROR';
+                break;
+            case 'privacy':
+                if (!this.agreeToPrivacy) this.fieldErrors.privacy = 'SHOP.PRIVACY_REQUIRED';
+                break;
+            case 'legal':
+                if (!this.agreeToLegal) this.fieldErrors.legal = 'SHOP.LEGAL_REQUIRED';
+                break;
+        }
+    }
+
+    validateAllFields(): boolean {
+        this.validateField('firstName');
+        this.validateField('lastName');
+        this.validateField('email');
+        this.validateField('phone');
+        this.validateField('privacy');
+        this.validateField('legal');
+
+        return (
+            this.isValidFirstName() &&
+            this.isValidLastName() &&
+            this.isValidEmail() &&
+            this.isValidPhone() &&
+            this.agreeToPrivacy &&
+            this.agreeToLegal
+        );
+    }
+
+    async checkout() {
+        if (!this.validateAllFields()) {
+            this.error = null;
             return;
         }
 
@@ -211,5 +296,21 @@ export class ShopCheckoutComponent implements OnInit {
         this.agreeToPrivacy = false;
         this.agreeToLegal = false;
         this.error = null;
+        this.touched = {
+            firstName: false,
+            lastName: false,
+            email: false,
+            phone: false,
+            privacy: false,
+            legal: false
+        };
+        this.fieldErrors = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            privacy: '',
+            legal: ''
+        };
     }
 }
