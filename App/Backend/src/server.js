@@ -29,7 +29,6 @@ try {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CUSTOMER_EMAIL = process.env.CUSTOMER_EMAIL || process.env.SMTP_USER;
 const STAFF_EMAIL = process.env.STAFF_EMAIL;
 const FRONTEND_URL = (process.env.FRONTEND_URL).trim();
 
