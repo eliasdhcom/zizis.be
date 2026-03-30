@@ -1,12 +1,13 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 29/03/2026
+    * @since 01/01/2025
 **/
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 export interface Product {
     id: number;
@@ -47,7 +48,7 @@ export interface VerifyPaymentResponse {
 })
 
 export class ShopService {
-    private apiUrl = 'http://localhost:3000/api/shop';
+    private apiUrl = `${environment.ApiUrl}/api/shop`;
 
     constructor(private http: HttpClient) {}
 
@@ -90,13 +91,11 @@ export class ShopService {
         const cart = this.getCart();
         const item = cart.find(i => i.id === productId);
 
-        // Max 5 per product
         if (item && item.quantity + quantity > 5) {
             console.warn('Max 5 per product allowed');
             return;
         }
 
-        // Max 10 total
         const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
         if (totalItems + quantity > 10) {
             console.warn('Max 10 total items allowed');
