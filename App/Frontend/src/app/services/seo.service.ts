@@ -4,8 +4,7 @@
     * @since 06/04/2026
 **/
 
-import { Injectable, inject } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
 
 export interface SeoMeta {
     title?: string;
@@ -23,55 +22,63 @@ export interface SeoMeta {
 @Injectable({
     providedIn: 'root'
 })
-
 export class SeoService {
-    private titleService = inject(Title);
-    private metaService = inject(Meta);
 
     updateMeta(meta: SeoMeta): void {
         if (meta.title) {
-            this.titleService.setTitle(meta.title);
-            this.updateMetaTag('og:title', meta.ogTitle || meta.title);
+            document.title = meta.title;
+            this.updateMetaTag('property', 'og:title', meta.ogTitle || meta.title);
         }
+
         if (meta.description) {
-            this.metaService.updateTag({ name: 'description', content: meta.description });
-            this.metaService.updateTag({ property: 'og:description', content: meta.description });
+            this.updateMetaTag('name', 'description', meta.description);
+            this.updateMetaTag('property', 'og:description', meta.description);
         }
+
         if (meta.image) {
-            this.metaService.updateTag({ property: 'og:image', content: meta.image });
-            this.metaService.updateTag({ property: 'og:image:alt', content: meta.title || 'Product image' });
+            this.updateMetaTag('property', 'og:image', meta.image);
+            this.updateMetaTag('property', 'og:image:alt', meta.title || 'Product image');
         }
+
         if (meta.url) {
-            this.metaService.updateTag({ property: 'og:url', content: meta.url });
+            this.updateMetaTag('property', 'og:url', meta.url);
         }
+
         if (meta.type) {
-            this.metaService.updateTag({ property: 'og:type', content: meta.type });
+            this.updateMetaTag('property', 'og:type', meta.type);
         }
+
         if (meta.canonical) {
-            let canonical = document.querySelector('link[rel="canonical"]');
-            if (!canonical) {
-                canonical = document.createElement('link');
-                canonical.setAttribute('rel', 'canonical');
-                document.head.appendChild(canonical);
-            }
-            canonical.setAttribute('href', meta.canonical);
+            this.updateCanonicalURL(meta.canonical);
         }
+
         if (meta.keywords) {
-            this.metaService.updateTag({ name: 'keywords', content: meta.keywords });
+            this.updateMetaTag('name', 'keywords', meta.keywords);
         }
+
         if (meta.structuredData) {
             this.updateStructuredData(meta.structuredData);
         }
     }
 
-    private updateMetaTag(name: string, content: string): void {
-        let tag = document.querySelector(`meta[property="${name}"]`);
+    private updateMetaTag(attributeName: string, attributeValue: string, content: string): void {
+        let tag = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
         if (!tag) {
             tag = document.createElement('meta');
-            tag.setAttribute('property', name);
+            tag.setAttribute(attributeName, attributeValue);
             document.head.appendChild(tag);
         }
         tag.setAttribute('content', content);
+    }
+
+    private updateCanonicalURL(url: string): void {
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement('link');
+            canonical.setAttribute('rel', 'canonical');
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute('href', url);
     }
 
     private updateStructuredData(data: any): void {
@@ -85,10 +92,7 @@ export class SeoService {
     }
 
     resetMeta(): void {
-        this.titleService.setTitle('Zizis');
-        this.metaService.updateTag({ 
-            name: 'description', 
-            content: 'Zizis - Your hairdresser in the heart of Boechout' 
-        });
+        document.title = 'Zizis';
+        this.updateMetaTag('name', 'description', 'Zizis - Your hairdresser in the heart of Boechout');
     }
 }
