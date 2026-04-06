@@ -41,6 +41,33 @@ if (missingEnvVars.length > 0) {
     process.exit(1);
 }
 
+const parseAllowedOrigins = (frontendUrl) => {
+    const origins = [frontendUrl];
+
+    try {
+        const url = new URL(frontendUrl);
+        const hostname = url.hostname;
+        const protocol = url.protocol;
+
+        const dotCount = (hostname.match(/\./g) || []).length;
+
+        if (dotCount === 1) {
+            const wwwHostname = `www.${hostname}`;
+            origins.push(`${protocol}//${wwwHostname}`);
+        } else if (dotCount === 2 && hostname.startsWith('www.')) {
+            const baseHostname = hostname.substring(4);
+            origins.push(`${protocol}//${baseHostname}`);
+        }
+    } catch (error) {
+        console.warn('Failed to parse FRONTEND_URL:', error.message);
+    }
+
+    origins.push('http://localhost:4200', 'http://localhost:3000');
+    return origins;
+};
+
+const allowedOrigins = parseAllowedOrigins(FRONTEND_URL);
+
 const shopLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     max: 100,
@@ -54,7 +81,13 @@ const checkoutLimiter = rateLimit({
 });
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:4200',
+    origin: function(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS not allowed for this origin'));
+        }
+    },
     credentials: true
 }));
 app.use(bodyParser.json());
