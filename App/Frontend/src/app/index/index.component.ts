@@ -4,11 +4,12 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LanguageService } from '../services/language.service';
+import { SeoService } from '../services/seo.service';
 import { SharedModule } from '../shared/shared.module';
 
 @Component({
@@ -20,6 +21,8 @@ import { SharedModule } from '../shared/shared.module';
 })
 
 export class IndexComponent implements OnInit {
+    private seoService = inject(SeoService);
+    
     dropdownOpen: boolean = false;
     currentLanguage: string = 'nl';
     currentTheme: string = 'light';
@@ -54,6 +57,14 @@ export class IndexComponent implements OnInit {
         this.languageService.checkAndSetLanguage();
         this.translate.setDefaultLang('nl');
         this.setTheme(this.currentTheme);
+
+        this.seoService.updateMeta({
+            title: 'Hairfashion Zizis - Your Hairdresser in Boechout',
+            description: 'Hairfashion Zizis - Your trusted hairdresser in the heart of Boechout. Professional hair products and hairdressing expertise since 2025.',
+            canonical: 'https://zizis.be/',
+            keywords: 'hairdresser, Boechout, hair products, hairfashion, Zizis'
+        });
+
         setTimeout(() => this.isLoading = false, 1000);
     }
 

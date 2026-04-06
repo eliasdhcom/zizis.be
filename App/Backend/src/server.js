@@ -317,6 +317,83 @@ const sendOrderEmails = async (customerName, customerEmail, customerPhone, custo
     }
 };
 
+app.get('/api/sitemap-products', (req, res) => {
+    try {
+        res.type('application/xml');
+        
+        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+        
+        const availableProducts = products.filter(p => p.available);
+        
+        availableProducts.forEach(product => {
+            const lastmod = new Date().toISOString().split('T')[0];
+            xml += '  <url>\n';
+            xml += `    <loc>https://zizis.be/shop/product/${product.id}</loc>\n`;
+            xml += `    <lastmod>${lastmod}</lastmod>\n`;
+            xml += '    <changefreq>weekly</changefreq>\n';
+            xml += '    <priority>0.7</priority>\n';
+            xml += '  </url>\n';
+        });
+        
+        xml += '</urlset>';
+        
+        res.send(xml);
+    } catch (error) {
+        console.error('Error generating sitemap:', error);
+        res.status(500).json({ 
+            success: false,
+            error: 'Failed to generate sitemap' 
+        });
+    }
+});
+
+app.get('/api/shop/products/:id/seo', shopLimiter, (req, res) => {
+    try {
+        const product = products.find(p => p.id === parseInt(req.params.id) && p.available);
+        
+        if (!product) {
+            return res.status(404).json({ 
+                success: false,
+                error: 'Product not found' 
+            });
+        }
+        
+        const seoData = {
+            title: `${product.name} - Zizis Hair Products`,
+            description: product.description?.substring(0, 150) || product.name,
+            image: product.image,
+            url: `https://zizis.be/shop/product/${product.id}`,
+            price: product.price,
+            available: product.available,
+            structuredData: {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": product.name,
+                "description": product.description,
+                "image": product.image,
+                "offers": {
+                    "@type": "Offer",
+                    "price": product.price,
+                    "priceCurrency": "EUR",
+                    "availability": product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+                }
+            }
+        };
+        
+        res.status(200).json({ 
+            success: true, 
+            seo: seoData 
+        });
+    } catch (error) {
+        console.error('Error fetching product SEO:', error);
+        res.status(500).json({ 
+            success: false,
+            error: 'Failed to fetch product SEO data' 
+        });
+    }
+});
+
 app.use((req, res) => {
     res.status(404).json({ 
         success: false,

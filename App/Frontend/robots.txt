@@ -1,7 +1,38 @@
+# @author EliasDH Team
+# @see https://eliasdh.com
+# @since 06/04/2026
+
+# All robots
 User-agent: *
-Allow: index.html
+Allow: /
+Allow: /shop
+Allow: /shop/product/
 Allow: /assets/
+Allow: /assets/media/
+Allow: /assets/i18n/
 
+# Disallow unnecessary paths
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /*?
+Disallow: /*&
+Disallow: /checkout
+Disallow: /success
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+Priority: 1.0
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Default crawl delay
+Crawl-delay: 2
+
+# Sitemaps
 Sitemap: https://zizis.be/sitemap.xml
-
-Crawl-delay: 5
+Sitemap: https://zizis.be/api/sitemap-products

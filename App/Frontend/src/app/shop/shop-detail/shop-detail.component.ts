@@ -4,13 +4,14 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ShopService, Product } from '../shop.service';
 import { LanguageService } from '../../services/language.service';
+import { SeoService } from '../../services/seo.service';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -21,12 +22,13 @@ import { SharedModule } from '../../shared/shared.module';
     styleUrls: ['./shop-detail.component.css']
 })
 
-export class ShopDetailComponent implements OnInit {
+export class ShopDetailComponent implements OnInit, OnDestroy {
     private shopService = inject(ShopService);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private languageService = inject(LanguageService);
     private translateService = inject(TranslateService);
+    private seoService = inject(SeoService);
 
     product: Product | null = null;
     loading = true;
@@ -45,20 +47,67 @@ export class ShopDetailComponent implements OnInit {
         });
     }
 
+    ngOnDestroy() {
+        this.seoService.resetMeta();
+    }
+
     loadProduct(id: number) {
         this.loading = true;
         this.error = null;
 
         this.shopService.getProduct(id).subscribe({
             next: (response) => {
-                if (response.success) this.product = response.product;
-                else this.error = 'SHOP.ERROR';
+                if (response.success) {
+                    this.product = response.product;
+                    this.updateSeoTags();
+                } else {
+                    this.error = 'SHOP.ERROR';
+                }
                 this.loading = false;
             },
             error: (err) => {
                 console.error('Error loading product:', err);
                 this.error = 'SHOP.ERROR';
                 this.loading = false;
+            }
+        });
+    }
+
+    private updateSeoTags() {
+        if (!this.product) return;
+
+        const productUrl = `https://zizis.be/shop/product/${this.product.id}`;
+        const imageUrl = this.product.image?.startsWith('http') 
+            ? this.product.image 
+            : `https://zizis.be${this.product.image}`;
+
+        this.seoService.updateMeta({
+            title: `${this.product.name} - Zizis Hair Products`,
+            description: this.product.description?.substring(0, 155) || `${this.product.name} - Hair products from Zizis`,
+            image: imageUrl,
+            url: productUrl,
+            type: 'product',
+            canonical: productUrl,
+            keywords: `${this.product.name}, hair products, Zizis, Boechout, professional`,
+            ogTitle: `${this.product.name} - Zizis`,
+            ogDescription: this.product.description?.substring(0, 155),
+            structuredData: {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": this.product.name,
+                "description": this.product.description,
+                "image": imageUrl,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "Zizis"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": this.product.price,
+                    "priceCurrency": "EUR",
+                    "availability": this.product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    "url": productUrl
+                }
             }
         });
     }
