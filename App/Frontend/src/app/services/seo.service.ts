@@ -23,6 +23,7 @@ export interface SeoMeta {
 @Injectable({
     providedIn: 'root'
 })
+
 export class SeoService {
     private titleService = inject(Title);
     private metaService = inject(Meta);
