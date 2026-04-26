@@ -6,7 +6,7 @@
 # Frontend build
 FROM nginx:alpine
 
-LABEL maintainer="Zizis"
+LABEL maintainer="EliasDH"
 LABEL version="1.0"
 LABEL description="This is the frontend image for the app."
 LABEL org.opencontainers.image.description="This is the frontend image for the app."

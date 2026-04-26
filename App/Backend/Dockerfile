@@ -3,7 +3,7 @@
 # @see https://eliasdh.com #
 # @since 01/01/2025        #
 ############################
-# Stage 1: build backend
+# Stage 1: Build backend
 FROM node:20-alpine AS builder
 
 LABEL maintainer="EliasDH"
