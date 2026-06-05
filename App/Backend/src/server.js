@@ -28,6 +28,7 @@ try {
 }
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const STAFF_EMAIL = process.env.STAFF_EMAIL;
 const SENDER_EMAIL = process.env.SMTP_USER;
