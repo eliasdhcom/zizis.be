@@ -1,7 +1,7 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 01/01/2025
+    * @since 01/01/2026
 **/
 
 /* Context Menu */
@@ -12,7 +12,7 @@
 }
 
 .contextmenu-svg {
-    fill: var(--secondary);
+    fill: var(--primary);
     padding-right: 10px;
     width: 16px;
     height: 16px;
@@ -24,6 +24,7 @@
     border-radius: 10px;
     position: absolute;
     padding-left: 0;
+    z-index: 3;
 }
 
 .contextmenu-item p {

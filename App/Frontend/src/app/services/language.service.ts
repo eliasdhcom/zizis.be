@@ -1,10 +1,10 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 01/01/2025
+    * @since 01/01/2026
 **/
 
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,8 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class LanguageService {
     constructor(
         private translate: TranslateService,
-        @Inject(PLATFORM_ID) private platformId: Object
-    ) { }
+        @Inject(PLATFORM_ID) private platformId: object
+    ) {}
 
     checkAndSetLanguage(): void {
         const storedLang = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;

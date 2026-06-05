@@ -1,12 +1,13 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 01/01/2025
+    * @since 01/01/2026
 **/
 
 import { Component, OnInit, HostListener, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser, DOCUMENT, CommonModule } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-contextmenu',
@@ -15,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     imports: [TranslatePipe, CommonModule],
     standalone: true
 })
+
 export class ContextMenuComponent implements OnInit {
     selectedText: string = '';
     contextMenuVisible: boolean = false;
@@ -22,14 +24,14 @@ export class ContextMenuComponent implements OnInit {
 
     constructor(
         private elementRef: ElementRef,
-        @Inject(PLATFORM_ID) private platformId: Object,
-        @Inject(DOCUMENT) private document: Document
+        @Inject(PLATFORM_ID) private platformId: object
     ) {}
 
     ngOnInit(): void {}
 
     @HostListener('document:contextmenu', ['$event'])
     onRightClick(event: MouseEvent): void {
+        if (!isPlatformBrowser(this.platformId)) return;
         if (window.innerWidth < 768) return;
 
         event.preventDefault();
@@ -62,7 +64,7 @@ export class ContextMenuComponent implements OnInit {
 
     toggleTheme(): void {
         if (!isPlatformBrowser(this.platformId)) return;
-        const htmlElement = this.document.documentElement;
+        const htmlElement = document.documentElement;
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         htmlElement.setAttribute('data-theme', newTheme);
