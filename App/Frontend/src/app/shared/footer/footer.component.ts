@@ -14,7 +14,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
     standalone: true,
-    imports: [CommonModule]
+    imports: [CommonModule],
+    host: { ngSkipHydration: 'true' }
 })
 
 export class FooterComponent implements OnInit {

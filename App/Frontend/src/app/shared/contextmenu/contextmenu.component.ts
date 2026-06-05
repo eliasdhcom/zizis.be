@@ -14,7 +14,8 @@ import { CommonModule } from '@angular/common';
     templateUrl: './contextmenu.component.html',
     styleUrls: ['./contextmenu.component.css'],
     imports: [TranslatePipe, CommonModule],
-    standalone: true
+    standalone: true,
+    host: { ngSkipHydration: 'true' }
 })
 
 export class ContextMenuComponent implements OnInit {
