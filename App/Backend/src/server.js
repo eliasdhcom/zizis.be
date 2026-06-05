@@ -435,6 +435,6 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    const msg = `Backend service running on port ${PORT}`;
+    const msg = `[START] ${new Date().toISOString()} Backend instance correctly started on port ${PORT}`;
     console.log(msg);
 });
