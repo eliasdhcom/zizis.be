@@ -19,14 +19,14 @@
     z-index: -1;
 }
 
-body.shop-success-body {
+.shop-success-body {
     position: relative;
     z-index: 0;
     padding-bottom: 0.5px;
     min-height: 100vh;
 }
 
-body.shop-success-body::before {
+.shop-success-body::before {
     content: '';
     position: fixed;
     top: 0;
@@ -236,7 +236,7 @@ body.shop-success-body::before {
 }
 
 @media (max-width: 480px) {
-    body.shop-success-body::before {
+    .shop-success-body::before {
         background: linear-gradient(90deg, 
             transparent 0%, 
             transparent 0%, 
