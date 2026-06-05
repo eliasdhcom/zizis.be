@@ -59,7 +59,7 @@ export class IndexComponent implements OnInit {
         this.setTheme(this.currentTheme);
 
         this.seoService.updateMeta({
-            title: 'Hairfashion Zizis - Your Hairdresser in Boechout',
+            title: 'Zizis',
             description: 'Hairfashion Zizis - Your trusted hairdresser in the heart of Boechout. Professional hair products and hairdressing expertise since 2025.',
             canonical: 'https://zizis.be/',
             keywords: 'hairdresser, Boechout, hair products, hairfashion, Zizis'
