@@ -4,9 +4,9 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, DOCUMENT, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-contextmenu',
@@ -20,7 +20,11 @@ export class ContextMenuComponent implements OnInit {
     contextMenuVisible: boolean = false;
     position = { top: '0px', left: '0px' };
 
-    constructor(private elementRef: ElementRef) {}
+    constructor(
+        private elementRef: ElementRef,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        @Inject(DOCUMENT) private document: Document
+    ) {}
 
     ngOnInit(): void {}
 
@@ -45,17 +49,20 @@ export class ContextMenuComponent implements OnInit {
     }
 
     copyLinkAddress(): void {
+        if (!isPlatformBrowser(this.platformId)) return;
         navigator.clipboard.writeText(window.location.href);
         this.contextMenuVisible = false;
     }
 
     copySelectedText(): void {
+        if (!isPlatformBrowser(this.platformId)) return;
         navigator.clipboard.writeText(this.selectedText);
         this.contextMenuVisible = false;
     }
 
     toggleTheme(): void {
-        const htmlElement = document.documentElement;
+        if (!isPlatformBrowser(this.platformId)) return;
+        const htmlElement = this.document.documentElement;
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         htmlElement.setAttribute('data-theme', newTheme);

@@ -4,8 +4,8 @@
     * @since 01/01/2025
 **/
 
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -22,6 +22,8 @@ export class NavbarComponent {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'nl';
 
+    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
     settingsConfig = {
         languages: [
             { code: 'nl', name: 'Nederlands' },
@@ -37,7 +39,9 @@ export class NavbarComponent {
 
     changeLanguage(languageCode: string) {
         this.translate.use(languageCode);
-        localStorage.setItem('language', languageCode);
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('language', languageCode);
+        }
         this.currentLanguage = languageCode;
         this.dropdownOpen = false;
     }

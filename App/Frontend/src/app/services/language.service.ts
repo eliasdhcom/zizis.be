@@ -4,7 +4,8 @@
     * @since 01/01/2025
 **/
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -12,17 +13,22 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class LanguageService {
-    constructor(private translate: TranslateService) { }
+    constructor(
+        private translate: TranslateService,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) { }
 
     checkAndSetLanguage(): void {
-        const storedLang = localStorage.getItem('language');
+        const storedLang = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;
         const languageToUse = storedLang || 'nl';
 
         this.translate.setDefaultLang(languageToUse);
         this.translate.use(languageToUse);
 
-        this.translate.onLangChange.subscribe((event) => {
-            localStorage.setItem('language', event.lang);
-        });
+        if (isPlatformBrowser(this.platformId)) {
+            this.translate.onLangChange.subscribe((event) => {
+                localStorage.setItem('language', event.lang);
+            });
+        }
     }
 }

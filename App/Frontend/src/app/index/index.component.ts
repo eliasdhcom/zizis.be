@@ -4,9 +4,9 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, DOCUMENT, CommonModule } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SeoService } from '../services/seo.service';
@@ -22,7 +22,7 @@ import { SharedModule } from '../shared/shared.module';
 
 export class IndexComponent implements OnInit {
     private seoService = inject(SeoService);
-    
+
     dropdownOpen: boolean = false;
     currentLanguage: string = 'nl';
     currentTheme: string = 'light';
@@ -48,7 +48,9 @@ export class IndexComponent implements OnInit {
 
     constructor(
         private languageService: LanguageService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        @Inject(DOCUMENT) private document: Document
     ) {
         this.currentYear = new Date().getFullYear();
     }
@@ -70,7 +72,9 @@ export class IndexComponent implements OnInit {
 
     changeLanguage(languageCode: string) {
         this.translate.use(languageCode);
-        localStorage.setItem('language', languageCode);
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('language', languageCode);
+        }
         this.currentLanguage = languageCode;
         this.dropdownOpen = false;
     }
@@ -87,8 +91,10 @@ export class IndexComponent implements OnInit {
 
     setTheme(theme: string) {
         this.currentTheme = theme;
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        if (isPlatformBrowser(this.platformId)) {
+            this.document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
     }
 
     toggleTheme() {
@@ -96,6 +102,8 @@ export class IndexComponent implements OnInit {
     }
 
     scrollToSection(section: string) {
-        document.querySelector(`.${section}`)?.scrollIntoView({ behavior: 'smooth' });
+        if (isPlatformBrowser(this.platformId)) {
+            this.document.querySelector(`.${section}`)?.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 }

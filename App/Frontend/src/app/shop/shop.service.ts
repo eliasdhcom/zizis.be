@@ -4,7 +4,8 @@
     * @since 01/01/2025
 **/
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -50,7 +51,10 @@ export interface VerifyPaymentResponse {
 export class ShopService {
     private apiUrl = `${environment.ApiUrl}/api/shop`;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) {}
 
     getProducts(): Observable<{ success: boolean; products: Product[]; count: number }> {
         return this.http.get<{ success: boolean; products: Product[]; count: number }>(
@@ -79,11 +83,13 @@ export class ShopService {
     }
 
     getCart(): CartItem[] {
+        if (!isPlatformBrowser(this.platformId)) return [];
         const cart = localStorage.getItem('shop-cart');
         return cart ? JSON.parse(cart) : [];
     }
 
     setCart(cart: CartItem[]) {
+        if (!isPlatformBrowser(this.platformId)) return;
         localStorage.setItem('shop-cart', JSON.stringify(cart));
     }
 
@@ -135,6 +141,7 @@ export class ShopService {
     }
 
     clearCart() {
+        if (!isPlatformBrowser(this.platformId)) return;
         localStorage.removeItem('shop-cart');
     }
 }

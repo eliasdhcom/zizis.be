@@ -4,7 +4,9 @@
     * @since 06/04/2026
 **/
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject, Inject } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 export interface SeoMeta {
     title?: string;
@@ -23,29 +25,33 @@ export interface SeoMeta {
     providedIn: 'root'
 })
 export class SeoService {
+    private titleService = inject(Title);
+    private metaService = inject(Meta);
+
+    constructor(@Inject(DOCUMENT) private document: Document) {}
 
     updateMeta(meta: SeoMeta): void {
         if (meta.title) {
-            document.title = meta.title;
-            this.updateMetaTag('property', 'og:title', meta.ogTitle || meta.title);
+            this.titleService.setTitle(meta.title);
+            this.metaService.updateTag({ property: 'og:title', content: meta.ogTitle || meta.title });
         }
 
         if (meta.description) {
-            this.updateMetaTag('name', 'description', meta.description);
-            this.updateMetaTag('property', 'og:description', meta.description);
+            this.metaService.updateTag({ name: 'description', content: meta.description });
+            this.metaService.updateTag({ property: 'og:description', content: meta.description });
         }
 
         if (meta.image) {
-            this.updateMetaTag('property', 'og:image', meta.image);
-            this.updateMetaTag('property', 'og:image:alt', meta.title || 'Product image');
+            this.metaService.updateTag({ property: 'og:image', content: meta.image });
+            this.metaService.updateTag({ property: 'og:image:alt', content: meta.title || 'Product image' });
         }
 
         if (meta.url) {
-            this.updateMetaTag('property', 'og:url', meta.url);
+            this.metaService.updateTag({ property: 'og:url', content: meta.url });
         }
 
         if (meta.type) {
-            this.updateMetaTag('property', 'og:type', meta.type);
+            this.metaService.updateTag({ property: 'og:type', content: meta.type });
         }
 
         if (meta.canonical) {
@@ -53,7 +59,7 @@ export class SeoService {
         }
 
         if (meta.keywords) {
-            this.updateMetaTag('name', 'keywords', meta.keywords);
+            this.metaService.updateTag({ name: 'keywords', content: meta.keywords });
         }
 
         if (meta.structuredData) {
@@ -61,38 +67,28 @@ export class SeoService {
         }
     }
 
-    private updateMetaTag(attributeName: string, attributeValue: string, content: string): void {
-        let tag = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
-        if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute(attributeName, attributeValue);
-            document.head.appendChild(tag);
-        }
-        tag.setAttribute('content', content);
-    }
-
     private updateCanonicalURL(url: string): void {
-        let canonical = document.querySelector('link[rel="canonical"]');
+        let canonical = this.document.querySelector('link[rel="canonical"]');
         if (!canonical) {
-            canonical = document.createElement('link');
+            canonical = this.document.createElement('link');
             canonical.setAttribute('rel', 'canonical');
-            document.head.appendChild(canonical);
+            this.document.head.appendChild(canonical);
         }
         canonical.setAttribute('href', url);
     }
 
     private updateStructuredData(data: any): void {
-        let script = document.querySelector('script[type="application/ld+json"]');
+        let script = this.document.querySelector('script[type="application/ld+json"]');
         if (!script) {
-            script = document.createElement('script');
+            script = this.document.createElement('script');
             script.setAttribute('type', 'application/ld+json');
-            document.head.appendChild(script);
+            this.document.head.appendChild(script);
         }
         script.textContent = JSON.stringify(data);
     }
 
     resetMeta(): void {
-        document.title = 'Zizis';
-        this.updateMetaTag('name', 'description', 'Zizis - Your hairdresser in the heart of Boechout');
+        this.titleService.setTitle('Zizis');
+        this.metaService.updateTag({ name: 'description', content: 'Zizis - Your hairdresser in the heart of Boechout' });
     }
 }

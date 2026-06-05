@@ -47,7 +47,7 @@ function run(): void {
     const port = process.env['PORT'] || 4000;
     const server = app();
     server.listen(port, () => {
-        console.log(`Node Express server listening on http://localhost:${port}`);
+        console.info(`[START] Frontend instance correctly started on port ${port} at ${new Date().toISOString()}`);
     });
 }
 
