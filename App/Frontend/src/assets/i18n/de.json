@@ -7,8 +7,6 @@
     "LOCATION": "Standort",
     "PHONE": "Telefon",
     "EMAIL": "E-Mail",
-    "LEGAL_GUIDELINES": "Rechtliche Richtlinien",
-    "PRIVACY_POLICY": "Datenschutzrichtlinie",
     "OPENING_HOURS_TITLE": "Öffnungszeiten",
     "OPENING_HOURS": {
         "MONDAY": "Montag: Geschlossen",

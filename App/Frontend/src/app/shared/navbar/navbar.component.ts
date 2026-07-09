@@ -7,12 +7,12 @@
 import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-navbar',
     standalone: true,
-    imports: [CommonModule, RouterModule, TranslatePipe],
+    imports: [CommonModule, RouterModule],
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css']
 })
